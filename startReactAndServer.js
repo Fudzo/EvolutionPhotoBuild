@@ -1,29 +1,27 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const request = require("request");
+const email = 'evolutionphotokv@hotmail.com'
+let request = require("request");
 const nodemailer = require('nodemailer');
 let transporter = nodemailer.createTransport({
 	service: 'hotmail',
 	auth: {
-	  user: 'evolutionphotokv@hotmail.com',
+	  user: email,
 	  pass: 'thefuki88'
 	}
   });
 
-let mailOptions = {
-	from: 'Nikola Furundzic',
-	to: 'nfinforce@gmail.com',
-	subject: 'Sending Email using Node.js',
-	text: 'That was easy!'
-};
 
+app.use(express.json()); 
 app.use(express.static(path.join(__dirname, 'build')));
-app.use('/', express.static(__dirname+'/server/build'));
+app.use('/', express.static(__dirname+'/server/build'))
+
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
 
 app.get('/test', (req, res) => {
 	request('https://randomuser.me/api', (error, response, body) => {
@@ -34,7 +32,16 @@ app.get('/test', (req, res) => {
 	});
   });
 
-app.post('/sendemail', (req, res) => {
+app.post('/api/sendEmail', (req, res) => {
+
+	const mailOptions = {
+		from: email,
+		to: 'nfinforce@gmail.com',
+		subject: `Novi email od ${req.body.ime}`,
+		text: req.body.poruka,
+		replyTo: req.body.email
+	};
+
 	transporter.sendMail(mailOptions, function(error, info){
 		if (error) {
 		  console.log(error);
@@ -45,4 +52,4 @@ app.post('/sendemail', (req, res) => {
 	  res.send("Email sent!");
 });
 
-app.listen(3000);
+app.listen(5005);
