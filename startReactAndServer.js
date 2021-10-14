@@ -52,4 +52,4 @@ app.post('/api/sendEmail', (req, res) => {
 	  res.send("Email sent!");
 });
 
-app.listen(5005);
+app.listen(3000);
