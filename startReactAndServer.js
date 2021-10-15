@@ -22,15 +22,28 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-
-app.get('/test', (req, res) => {
-	request('https://randomuser.me/api', (error, response, body) => {
-  
-	if(!error && response.statusCode === 200) {
-		res.send(JSON.stringify(body));
-	  };
-	});
-  });
+app.post('/api/captcha', (req, res) => {
+	console.log(req.body.captcha);
+/*	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
+		return res.json({"success" : false, "message": "Please select captcha."})
+	};
+// Secret KEY
+    const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
+// Verify URL
+	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${sKey}&response=${req.body.captcha}$remoteip=${req.socket.remoteAddress}`;
+// Make request
+	request(verifyURL, (err, res, body) => {
+		body = JSON.parse(body);
+// If not successful
+		if(body.success !== undefined && !body.success) {
+			console.log('FAILEEED!!');
+			return res.json({"success": false, "message": "Failed captcha verification."})
+		};
+// If successful
+			console.log('success!!');
+		    return res.json({"success": true, "message": "Captcha verification succesful."})
+	});*/
+});
 
 app.post('/api/sendEmail', (req, res) => {
 
