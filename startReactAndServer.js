@@ -23,8 +23,8 @@ app.get('/', function (req, res) {
 });
 
 app.post('/api/captcha', (req, res) => {
-	console.log(req.body.captcha);
-/*	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
+
+	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
 		return res.json({"success" : false, "message": "Please select captcha."})
 	};
 // Secret KEY
@@ -42,7 +42,7 @@ app.post('/api/captcha', (req, res) => {
 // If successful
 			console.log('success!!');
 		    return res.json({"success": true, "message": "Captcha verification succesful."})
-	});*/
+	});
 });
 
 app.post('/api/sendEmail', (req, res) => {
