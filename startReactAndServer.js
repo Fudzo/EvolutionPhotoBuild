@@ -27,6 +27,9 @@ app.post('/api/captcha', (req, res) => {
 	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
 		return res.json({"success" : false, "message": "Please select captcha."})
 	};
+
+	return res.json({"WORKS": "NOOOOOOOOOOOOOOOO"});
+	/*
 // Secret KEY
     const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
 // Verify URL
@@ -36,43 +39,13 @@ app.post('/api/captcha', (req, res) => {
 		body = JSON.parse(body);
 // If not successful
 		if(body.success !== undefined && !body.success) {
-
-			const mailOptions = {
-				from: 'nfinforce@gmail.com',
-				to: 'nfinforce@gmail.com',
-				subject: `Novi email od FAILED`,
-				text: "FAILED",
-			};
-		
-			transporter.sendMail(mailOptions, function(error, info){
-				if (error) {
-				  console.log(error);
-				} else {
-				  console.log('Email sent: ' + info.response);
-				}
-			  });
-
+			console.log('FAILEEED!!');
 			return res.json({"success": false, "message": "Failed captcha verification."})
 		};
 // If successful
-
-const mailOptions = {
-	from: 'nfinforce@gmail.com',
-	to: 'nfinforce@gmail.com',
-	subject: `Novi email od SUCCESS`,
-	text: "SUCCESS",
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-	if (error) {
-	  console.log(error);
-	} else {
-	  console.log('Email sent: ' + info.response);
-	}
-  });
-
+			console.log('success!!');
 		    return res.json({"success": true, "message": "Captcha verification succesful."})
-	});
+	}); */
 });
 
 app.post('/api/sendEmail', (req, res) => {
