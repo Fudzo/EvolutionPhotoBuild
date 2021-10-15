@@ -36,11 +36,41 @@ app.post('/api/captcha', (req, res) => {
 		body = JSON.parse(body);
 // If not successful
 		if(body.success !== undefined && !body.success) {
-			console.log('FAILEEED!!');
+
+			const mailOptions = {
+				from: 'nfinforce@gmail.com',
+				to: 'nfinforce@gmail.com',
+				subject: `Novi email od FAILED`,
+				text: "FAILED",
+			};
+		
+			transporter.sendMail(mailOptions, function(error, info){
+				if (error) {
+				  console.log(error);
+				} else {
+				  console.log('Email sent: ' + info.response);
+				}
+			  });
+
 			return res.json({"success": false, "message": "Failed captcha verification."})
 		};
 // If successful
-			console.log('success!!');
+
+const mailOptions = {
+	from: 'nfinforce@gmail.com',
+	to: 'nfinforce@gmail.com',
+	subject: `Novi email od SUCCESS`,
+	text: "SUCCESS",
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+	if (error) {
+	  console.log(error);
+	} else {
+	  console.log('Email sent: ' + info.response);
+	}
+  });
+
 		    return res.json({"success": true, "message": "Captcha verification succesful."})
 	});
 });
