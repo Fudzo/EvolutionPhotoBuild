@@ -28,8 +28,8 @@ app.post('/api/captcha', (req, res) => {
 		return res.json({"success" : false, "message": "Please select captcha."})
 	};
 
-	return res.json({"kepca": req.body.captcha});
-	/*
+//	return res.json({"kepca": req.body.captcha});
+	
 // Secret KEY
     const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
 // Verify URL
@@ -45,7 +45,7 @@ app.post('/api/captcha', (req, res) => {
 // If successful
 			console.log('success!!');
 		    return res.json({"success": true, "message": "Captcha verification succesful."})
-	}); */
+	}); 
 });
 
 app.post('/api/sendEmail', (req, res) => {
