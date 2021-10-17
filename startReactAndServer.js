@@ -28,7 +28,7 @@ app.post('/api/captcha', (req, res) => {
 		return res.json({"success" : false, "message": "Please select captcha."})
 	};
 
-	return res.json({"WORKS": "NOOOOOOOOOOOOOOOO"});
+	return res.json({"kepca": req.body.captcha});
 	/*
 // Secret KEY
     const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
