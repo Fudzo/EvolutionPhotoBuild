@@ -28,16 +28,24 @@ app.post('/api/captcha', (req, res) => {
 		return res.json({"success" : false, "message": "Please select captcha."})
 	};
 
-	return res.json({"captcha" : req.body.captcha});
-
-	//return res.json({"WORKS": "NOOOOOOOOOOOOOOOO"});
 	
 // Secret KEY
     const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
 // Verify URL
-	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU&response=${req.body.captcha}`;
+	// const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU&response=${req.body.captcha}`;
+
+	const VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
+	
+	fetch(VERIFY_URL, {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: `secret=${sKey}&response=${req.body.captcha}`
+	}).then(res => res.json()).then(data => {
+		return res.send(data.json());
+	})
+
 // Make request
-	request(verifyURL, (err, res, body) => {
+/*	request(verifyURL, (err, res, body) => {
 // If not successful
 
 		if(body.success !== undefined && !body.success) {
@@ -47,7 +55,7 @@ app.post('/api/captcha', (req, res) => {
 // If successful
 			console.log('success!!');
 		    return res.json({"success": true, "message": "Captcha verification succesful."})
-	}); 
+	});  */
 });
 
 app.post('/api/sendEmail', (req, res) => {
