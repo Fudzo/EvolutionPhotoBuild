@@ -26,38 +26,23 @@ app.post('/api/captcha', (req, res) => {
 
 	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
 		return res.json({"success" : false, "message": "Please select captcha."})
-	};
-
-	
+	};	
 // Secret KEY
     const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
 // Verify URL
-	// const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU&response=${req.body.captcha}`;
-
-	const VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
-	
-	fetch(VERIFY_URL, {
-		method: "POST",
-		headers: { "Content-Type": "application/x-www-form-urlencoded" },
-		body: `secret=${sKey}&response=${req.body.captcha}`
-	}).then(res => {
-		return res.json()
-	}).then(data => {
-		res.send(data);
-	});
-
+	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU&response=${req.body.captcha}`;
 // Make request
-/*	request(verifyURL, (err, res, body) => {
+	request(verifyURL, (err, res2, body) => {
+		body = JSON.parse(body);
 // If not successful
-
 		if(body.success !== undefined && !body.success) {
 			console.log('FAILEEED!!');
-			return res.json({"success": false, "message": "Failed captcha verification."})
+			return res.json({"success": false, "message": "Failed captcha verification."});
 		};
 // If successful
 			console.log('success!!');
-		    return res.json({"success": true, "message": "Captcha verification succesful."})
-	});  */
+		    return res.json({"success": true, "message": "Captcha verification succesful."});
+	});  
 });
 
 app.post('/api/sendEmail', (req, res) => {
