@@ -66,7 +66,6 @@ app.route('/').get(runTheApp);
 app.route('/api/captcha').post(verifyCaptcha);
 app.route('/api/sendEmail').post(sendEmail);
 
-
 //////////////// ROUTES //////////////////
 
 app.listen(3000);
