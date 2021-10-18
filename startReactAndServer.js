@@ -22,6 +22,10 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+app.get('/testBre', (req, res) => {
+ res.send('works??');
+});
+
 app.post('/api/captcha', (req, res) => {
 
 	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
