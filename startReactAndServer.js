@@ -22,22 +22,18 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.get('/api/testbre', (req, res) => {
- res.send('works??');
-});
-
 app.post('/api/captcha', (req, res) => {
 
 	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
 		return res.json({"success" : false, "message": "Please select captcha."})
 	};
 
-	return res.json({"kepca": req.body.captcha});
-	/*
+	//return res.json({"WORKS": "NOOOOOOOOOOOOOOOO"});
+	
 // Secret KEY
     const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
 // Verify URL
-	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${sKey}&response=${req.body.captcha}$remoteip=${req.socket.remoteAddress}`;
+	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU&response=${req.body.captcha}`;
 // Make request
 	request(verifyURL, (err, res, body) => {
 		body = JSON.parse(body);
@@ -49,7 +45,7 @@ app.post('/api/captcha', (req, res) => {
 // If successful
 			console.log('success!!');
 		    return res.json({"success": true, "message": "Captcha verification succesful."})
-	});  */
+	}); 
 });
 
 app.post('/api/sendEmail', (req, res) => {
