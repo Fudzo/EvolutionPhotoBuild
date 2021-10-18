@@ -37,6 +37,10 @@ app.post('/api/captcha', (req, res) => {
 // Make request
 	request(verifyURL, (err, res, body) => {
 // If not successful
+		if(err) {
+			return res.json(err);
+		}
+
 		if(body.success !== undefined && !body.success) {
 			console.log('FAILEEED!!');
 			return res.json({"success": false, "message": "Failed captcha verification."})
