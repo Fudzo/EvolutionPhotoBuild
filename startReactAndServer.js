@@ -2,9 +2,10 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const email = 'evolutionphotokv@hotmail.com'
-let request = require("request");
+const request = require("request");
 const nodemailer = require('nodemailer');
-let transporter = nodemailer.createTransport({
+const router = express.Router();
+const transporter = nodemailer.createTransport({
 	service: 'hotmail',
 	auth: {
 	  user: email,
@@ -12,40 +13,29 @@ let transporter = nodemailer.createTransport({
 	}
   });
 
-
 app.use(express.json()); 
 app.use(express.static(path.join(__dirname, 'build')));
 app.use('/', express.static(__dirname+'/server/build'))
 
-
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
-app.post('/api/captcha', (req, res) => {
-
+//////////////// ROUTE HANDLERS //////////////////
+const verifyCaptcha = (req, res) => {
 	if(req.body.captcha === undefined || req.body.captcha === '' || req.body.captcha === null) {
-		return res.json({"success" : false, "message": "Please select captcha."})
+		return res.json({"success" : false, "message": "Please select captcha."});
 	};	
-// Secret KEY
     const sKey = '6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU';
-// Verify URL
-	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU&response=${req.body.captcha}`;
-// Make request
+	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=${sKey}&response=${req.body.captcha}`;
 	request(verifyURL, (err, res2, body) => {
 		body = JSON.parse(body);
 // If not successful
 		if(body.success !== undefined && !body.success) {
-			console.log('FAILEEED!!');
 			return res.json({"success": false, "message": "Failed captcha verification."});
 		};
 // If successful
-			console.log('success!!');
 		    return res.json({"success": true, "message": "Captcha verification succesful."});
 	});  
-});
+};
 
-app.post('/api/sendEmail', (req, res) => {
+const sendEmail = (req, res) => {
 
 	const mailOptions = {
 		from: email,
@@ -63,6 +53,20 @@ app.post('/api/sendEmail', (req, res) => {
 		}
 	  });
 	  res.send("Email sent!");
-});
+};
+
+const runTheApp = (req, res) => {
+	res.sendFile(path.join(__dirname, 'build', 'index.html'));
+};
+//////////////// ROUTE HANDLERS //////////////////
+
+//////////////// ROUTES //////////////////
+
+app.route('/').get(runTheApp);
+app.route('/api/captcha').post(verifyCaptcha);
+app.route('/api/sendEmail').post(sendEmail);
+
+
+//////////////// ROUTES //////////////////
 
 app.listen(3000);
