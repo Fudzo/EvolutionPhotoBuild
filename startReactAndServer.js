@@ -28,6 +28,8 @@ app.post('/api/captcha', (req, res) => {
 		return res.json({"success" : false, "message": "Please select captcha."})
 	};
 
+	return res.json({"captcha" : req.body.captcha});
+
 	//return res.json({"WORKS": "NOOOOOOOOOOOOOOOO"});
 	
 // Secret KEY
@@ -37,9 +39,6 @@ app.post('/api/captcha', (req, res) => {
 // Make request
 	request(verifyURL, (err, res, body) => {
 // If not successful
-		if(err) {
-			return res.json(err);
-		}
 
 		if(body.success !== undefined && !body.success) {
 			console.log('FAILEEED!!');
