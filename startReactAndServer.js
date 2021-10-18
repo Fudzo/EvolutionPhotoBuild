@@ -40,9 +40,11 @@ app.post('/api/captcha', (req, res) => {
 		method: "POST",
 		headers: { "Content-Type": "application/x-www-form-urlencoded" },
 		body: `secret=${sKey}&response=${req.body.captcha}`
-	}).then(res => res.json()).then(data => {
-		return res.send(data.json());
-	})
+	}).then(res => {
+		return res.json()
+	}).then(data => {
+		res.send(data);
+	});
 
 // Make request
 /*	request(verifyURL, (err, res, body) => {
