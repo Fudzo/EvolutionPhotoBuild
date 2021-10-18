@@ -36,7 +36,6 @@ app.post('/api/captcha', (req, res) => {
 	const verifyURL = `https://google.com/recaptcha/api/siteverify?secret=6Lde484cAAAAADfQX3hbk2JVHRD3wqfR157eSqCU&response=${req.body.captcha}`;
 // Make request
 	request(verifyURL, (err, res, body) => {
-		body = JSON.parse(body);
 // If not successful
 		if(body.success !== undefined && !body.success) {
 			console.log('FAILEEED!!');
