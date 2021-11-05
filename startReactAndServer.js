@@ -1,9 +1,20 @@
-const express = require('express');
-const path = require('path');
+// const express = require('express');
+// const path = require('path');
+// const request = require("request");
+// const nodemailer = require('nodemailer');
+
+import express from "express";
+import path from "path";
+const __dirname = path.resolve();
+import request from 'request';
+import nodemailer from "nodemailer";
+
+import cors from 'cors';
+import fileupload from 'express-fileupload';
+import { PDFDocument } from 'pdf-lib';
+
 const app = express();
-const email = 'evolutionphotokv@hotmail.com'
-const request = require("request");
-const nodemailer = require('nodemailer');
+const email = 'evolutionphotokv@hotmail.com';
 const router = express.Router();
 const transporter = nodemailer.createTransport({
 	service: 'hotmail',
@@ -11,11 +22,33 @@ const transporter = nodemailer.createTransport({
 	  user: email,
 	  pass: 'thefuki88'
 	}
-  });
+});
 
-app.use(express.json()); 
+app.use(fileupload());
+app.use(cors());
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
-app.use('/', express.static(__dirname+'/server/build'))
+app.use('/', express.static(__dirname+'/server/build'));
+
+let fieldsArray = [];
+
+const mainRoutePost = async (req, res) => {
+    fieldsArray = [];
+    const fileName = req.files.myFile;
+//      console.log(fileName);
+    const pdfDoccc = await PDFDocument.load(fileName.data);
+    const form = pdfDoccc.getForm();
+    const fields = form.getFields();
+
+    fields.forEach(field => {
+        const type = field.constructor.name
+        const name = field.getName()
+//        console.log(`${name}`);
+        fieldsArray.push(name);
+    
+      });
+    res.json({fieldsArray, formName:fileName.name});
+};
 
 //////////////// ROUTE HANDLERS //////////////////
 const verifyCaptcha = (req, res) => {
@@ -66,6 +99,9 @@ const runTheApp = (req, res) => {
 app.route('/').get(runTheApp);
 app.route('/api/captcha').post(verifyCaptcha);
 app.route('/api/sendEmail').post(sendEmail);
+app.route('/uploadpdf').post(mainRoutePost);
+
+
 
 //////////////// ROUTES //////////////////
 
